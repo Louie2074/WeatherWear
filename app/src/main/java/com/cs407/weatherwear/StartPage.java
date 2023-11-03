@@ -11,14 +11,14 @@ public class StartPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_firstpage);
+        setContentView(R.layout.activity_startpage);
 
         Button goButton = findViewById(R.id.goButton);
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // When the button is clicked, start the SecondActivity
-                Intent intent = new Intent(StartPage.this, SecondPage.class);
+                Intent intent = new Intent(StartPage.this, FirstPage.class);
                 startActivity(intent);
             }
         });
