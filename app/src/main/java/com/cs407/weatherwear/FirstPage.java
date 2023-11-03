@@ -15,7 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SecondPage extends AppCompatActivity {
+public class FirstPage extends AppCompatActivity {
 
     // weather URL to get JSON
     private String weatherUrl;
