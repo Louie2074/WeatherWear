@@ -1,5 +1,6 @@
 package com.cs407.weatherwear;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -7,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 
-public class WeatherWearActivity extends AppCompatActivity {
+public class secondPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weatherwear);
+        setContentView(R.layout.activity_secondpage);
 
         Button addButton = findViewById(R.id.addButton);
         Button homeButton = findViewById(R.id.homeButton);
@@ -28,7 +29,9 @@ public class WeatherWearActivity extends AppCompatActivity {
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle Home button click
+                Intent intent = new Intent(secondPage.this, FirstPage.class);
+                startActivity(intent);
+                finish();
             }
         });
 
