@@ -30,7 +30,7 @@ public class FirstPage extends AppCompatActivity {
         setContentView(R.layout.activity_startpage);
 
         // Link the TextView in which the temperature will be displayed
-        textView = findViewById(R.id.textView);
+        textView = findViewById(R.id.currentTempText);
 
         // Create an instance of the Fused Location Provider Client
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
