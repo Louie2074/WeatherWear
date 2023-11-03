@@ -1,7 +1,6 @@
 package com.cs407.weatherwear;
 
 import android.annotation.SuppressLint;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -29,7 +28,7 @@ public class SecondPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_firstpage);
 
         // Link the TextView in which the temperature will be displayed
         textView = findViewById(R.id.textView);
