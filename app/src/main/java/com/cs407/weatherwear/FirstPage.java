@@ -1,8 +1,12 @@
 package com.cs407.weatherwear;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.Request;
@@ -27,19 +31,27 @@ public class FirstPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_startpage);
+        setContentView(R.layout.activity_firstpage);
+        Button goButton = findViewById(R.id.btVar1);
+        goButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences sharedPreferences = getSharedPreferences("Data", MODE_PRIVATE);
+                String jsonString = sharedPreferences.getString("json_data", null);
+                if (jsonString != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(jsonString);
 
-        // Link the TextView in which the temperature will be displayed
-        textView = findViewById(R.id.textView);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
 
-        // Create an instance of the Fused Location Provider Client
+                }
+            }
+        });
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        // On clicking this button, the function to get the coordinates will be called
-        findViewById(R.id.btVar1).setOnClickListener(view -> {
-            // Function to find the coordinates of the last location
-            obtainLocation();
-        });
     }
 
     @SuppressLint("MissingPermission")
