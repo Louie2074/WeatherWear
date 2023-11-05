@@ -15,6 +15,7 @@ import android.widget.Button;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class StartPage extends AppCompatActivity {
@@ -31,7 +32,6 @@ public class StartPage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(StartPage.this, FirstPage.class);
-                Log.d("test", "Hello");
                 startActivity(intent);
             }
         });
@@ -41,7 +41,6 @@ public class StartPage extends AppCompatActivity {
     private void getLocation() {
         FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Request the missing permissions
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
                     REQUEST_LOCATION_PERMISSION);
@@ -50,10 +49,8 @@ public class StartPage extends AppCompatActivity {
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, location -> {
                     if (location != null) {
-                        double lat = location.getLatitude();
-                        double longi = location.getLongitude();
-                        latitude = lat;
-                        longitude = longi;
+                        latitude = location.getLatitude();
+                        longitude = location.getLongitude();
                         WeatherAPIWrapper weather = new WeatherAPIWrapper(latitude,longitude);
                         weather.getWeatherData(new WeatherAPIWrapper.Callback() {
                             @Override
@@ -67,9 +64,7 @@ public class StartPage extends AppCompatActivity {
                             }
                             @Override
                             public void onError(Exception e) {
-
                                 runOnUiThread(() -> {
-
                                     Log.d("Error", "onError: "+e);
                                 });
                             }

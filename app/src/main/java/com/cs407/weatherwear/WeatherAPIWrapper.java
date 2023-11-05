@@ -1,13 +1,6 @@
 package com.cs407.weatherwear;
-import android.annotation.SuppressLint;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -19,13 +12,9 @@ import java.net.URL;
 
 
 public class WeatherAPIWrapper {
-
     private double latitude;
     private double longitude;
     private final Handler mainThreadHandler = new Handler(Looper.getMainLooper());
-
-
-    private static String apikey = "47eeeb8c91c44b9a8d4162810230411";
 
     public WeatherAPIWrapper(double latitude, double longitude) {
         this.latitude = latitude;
@@ -47,15 +36,14 @@ public class WeatherAPIWrapper {
         this.longitude = newLongitude;
     }
     private String getURL(){
-        return "https://api.weatherapi.com/v1/forecast.json?key="+apikey+"&q="+this.latitude+","+this.longitude+"&days=1";
+        String apikey = "47eeeb8c91c44b9a8d4162810230411";
+        return "https://api.weatherapi.com/v1/forecast.json?key="+ apikey +"&q="+this.latitude+","+this.longitude+"&days=1";
     }
 
     public interface Callback {
         void onResult(JSONObject result);
         void onError(Exception e);
     }
-
-
     public void getWeatherData(final Callback callback) {
         new Thread(new Runnable() {
             HttpURLConnection connection = null;
@@ -77,16 +65,10 @@ public class WeatherAPIWrapper {
                             response.append(line);
                         }
                         reader.close();
-
-                        // Convert the response StringBuilder to JSONObject
-                        final JSONObject jsonResponse = new JSONObject(response.toString());
-
-                        mainThreadHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (callback != null) {
-                                    callback.onResult(jsonResponse);
-                                }
+                        JSONObject jsonResponse = new JSONObject(response.toString());
+                        mainThreadHandler.post(() -> {
+                            if (callback != null) {
+                                callback.onResult(jsonResponse);
                             }
                         });
                     } else {
@@ -94,13 +76,9 @@ public class WeatherAPIWrapper {
                     }
                 } catch (final Exception e) {
                     e.printStackTrace();
-
-                    mainThreadHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (callback != null) {
-                                callback.onError(e);
-                            }
+                    mainThreadHandler.post(() -> {
+                        if (callback != null) {
+                            callback.onError(e);
                         }
                     });
                 } finally {
@@ -111,8 +89,4 @@ public class WeatherAPIWrapper {
             }
         }).start();
     }
-
-
-
-
 }
