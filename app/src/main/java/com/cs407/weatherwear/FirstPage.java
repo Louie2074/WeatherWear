@@ -5,22 +5,22 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.android.volley.Request;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.ArrayList;
 
 public class FirstPage extends AppCompatActivity {
-    private TextView textView;
-    private FusedLocationProviderClient fusedLocationClient;
+    private TextView todayText, day1Text, day2Text, day3Text, day4Text, day5Text, day6Text, day7Text;
 
     private WeatherAPITools tools;
 
@@ -28,13 +28,61 @@ public class FirstPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firstpage);
+
+        // Initialize TextViews
+        todayText = findViewById(R.id.todayText);
+
         SharedPreferences sharedPreferences = getSharedPreferences("Data", MODE_PRIVATE);
         String jsonString = sharedPreferences.getString("json_data", null);
+
+        if (jsonString != null) {
+            try {
+                tools = new WeatherAPITools(new JSONObject(jsonString));
+                // Use existing data if available
+                updateUIWithWeatherData();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            // Fetch weather data using Volley
+            fetchWeatherData();
+        }
+    }
+
+    // Method to fetch weather data using Volley
+    private void fetchWeatherData() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://api.weatherapi.com/v1/forecast.json?key=YOUR_API_KEY"; // Replace with your API key
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        tools = new WeatherAPITools(response);
+                        // Update UI with weather data
+                        updateUIWithWeatherData();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Handle API call failures here
+                Toast.makeText(FirstPage.this, "Weather data retrieval failed!", Toast.LENGTH_SHORT).show();
+                Log.e("WeatherAPI", "Error: " + error.toString());
+            }
+        });
+
+        queue.add(jsonObjectRequest);
+    }
+
+    // Update UI with weather data
+    private void updateUIWithWeatherData() {
         try {
-            tools = new WeatherAPITools(new JSONObject(jsonString));
-            TextView today = (TextView) findViewById(R.id.currentDay);
+            // Update TextViews with weather information
+            String[] weatherDetailsToday = tools.getCurrentWeather();
+            todayText.setText("Today's Weather: " + weatherDetailsToday[0] + "°F, " + weatherDetailsToday[1]);
+
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 }
