@@ -32,6 +32,7 @@ public class FirstPage extends AppCompatActivity {
         String jsonString = sharedPreferences.getString("json_data", null);
         try {
             tools = new WeatherAPITools(new JSONObject(jsonString));
+            TextView today = (TextView) findViewById(R.id.currentDay);
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
