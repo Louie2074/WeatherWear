@@ -11,7 +11,32 @@
         android:gravity="center"
         android:text="Today"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/buttonLayout"/>
+        app:layout_constraintBottom_toTopOf="@id/minMaxTempLayout" />
+
+    <LinearLayout
+        android:id="@+id/minMaxTempLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/todayText"
+        app:layout_constraintBottom_toTopOf="@id/buttonLayout">
+
+        <TextView
+            android:id="@+id/minTempTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Min Temp: "
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/maxTempTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Max Temp: "
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/buttonLayout"

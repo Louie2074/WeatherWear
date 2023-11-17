@@ -20,7 +20,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class FirstPage extends AppCompatActivity {
-    private TextView todayText, day1Text, day2Text, day3Text, day4Text, day5Text, day6Text, day7Text;
+    private TextView todayText, minTempTextView, maxTempTextView;
+
 
     private WeatherAPITools tools;
 
@@ -31,6 +32,8 @@ public class FirstPage extends AppCompatActivity {
 
         // Initialize TextViews
         todayText = findViewById(R.id.todayText);
+        minTempTextView = findViewById(R.id.minTempTextView);
+        maxTempTextView = findViewById(R.id.maxTempTextView);
 
         SharedPreferences sharedPreferences = getSharedPreferences("Data", MODE_PRIVATE);
         String jsonString = sharedPreferences.getString("json_data", null);
@@ -75,14 +78,26 @@ public class FirstPage extends AppCompatActivity {
     }
 
     // Update UI with weather data
+    // Update UI with weather data
     private void updateUIWithWeatherData() {
         try {
             // Update TextViews with weather information
             String[] weatherDetailsToday = tools.getCurrentWeather();
             todayText.setText("Today's Weather: " + weatherDetailsToday[0] + "°F, " + weatherDetailsToday[1]);
 
+            // Fetch min and max temperature
+            String[] minMaxTemp = tools.getMinMaxTemp();
+            String minTemp = minMaxTemp[0];
+            String maxTemp = minMaxTemp[1];
+
+            // Display min and max temperature in TextViews
+            // For example, if you have separate TextViews for min and max temperature:
+            minTempTextView.setText("Today's Low: " + minTemp + "°F");
+            maxTempTextView.setText("Today's High: " + maxTemp + "°F");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
 }
