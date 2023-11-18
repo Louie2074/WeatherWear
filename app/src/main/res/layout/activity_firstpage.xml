@@ -23,12 +23,12 @@
             android:text="" />
 
         <Button
-            android:id="@+id/addClothesButton"
+            android:id="@+id/recommButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginVertical="25dp"
-            android:text="Add Clothes" />
+            android:text="Go!" />
 
         <LinearLayout
             android:id="@+id/hourlyForecastLayout"
