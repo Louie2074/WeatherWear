@@ -23,12 +23,12 @@
             android:text="" />
 
         <Button
-            android:id="@+id/recommButton"
+            android:id="@+id/recommButton1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginVertical="25dp"
-            android:text="Go!" />
+            android:text="Get Outfit" />
 
         <LinearLayout
             android:id="@+id/hourlyForecastLayout"
@@ -47,11 +47,6 @@
                 android:singleLine="false" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/dailyForecastLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"></LinearLayout>
 
     </LinearLayout>
 
@@ -65,18 +60,12 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/addButton"
+            android:id="@+id/recommButton2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Add" />
+            android:text="Outfits" />
 
-        <Button
-            android:id="@+id/homeButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Home" />
 
         <Button
             android:id="@+id/settingsButton"

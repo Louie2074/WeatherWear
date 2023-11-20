@@ -15,7 +15,6 @@ import android.widget.Button;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class StartPage extends AppCompatActivity {
@@ -31,7 +30,7 @@ public class StartPage extends AppCompatActivity {
         goButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(StartPage.this, FirstPage.class);
+                Intent intent = new Intent(StartPage.this, WeatherPage.class);
                 startActivity(intent);
             }
         });
