@@ -22,7 +22,7 @@ public class WeatherAPITools {
     }
     public String[] getCurrentWeather() throws JSONException {
         JSONObject obj = (JSONObject) json.get("current");
-        return new String[]{obj.get("temp_f").toString(),((JSONObject) obj.get("condition")).get("text").toString()};
+        return new String[]{obj.get("temp_f").toString(),((JSONObject) obj.get("condition")).get("text").toString(),((JSONObject) obj.get("condition")).get("icon").toString().substring(29)};
     }
 
     public String[] getMinMaxTemp() throws JSONException {

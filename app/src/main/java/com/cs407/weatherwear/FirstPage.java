@@ -1,12 +1,11 @@
 package com.cs407.weatherwear;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.text.LineBreaker;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,14 +18,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 public class FirstPage extends AppCompatActivity {
-    private TextView todayText, hourlyForecastText, day1Text, day2Text, day3Text, day4Text, day5Text, day6Text, day7Text;
+    private TextView locationText, tempText, weatherCondText, highAndLowText, hourlyForecastText;
+    private ImageView weatherCondIcon;
 
     private WeatherAPITools tools;
 
@@ -36,8 +35,12 @@ public class FirstPage extends AppCompatActivity {
         setContentView(R.layout.activity_firstpage);
 
         // Initialize TextViews
-        todayText = findViewById(R.id.todayText);
-        hourlyForecastText = findViewById(R.id.hourlyForecastText);
+        locationText = findViewById(R.id.locationText);
+        tempText = findViewById(R.id.tempText);
+        weatherCondText = findViewById(R.id.weatherCondText);
+        weatherCondIcon = findViewById(R.id.weatherCondIcon);
+        highAndLowText = findViewById(R.id.highAndLowText);
+        hourlyForecastText = findViewById(R.id.hourlyForecastTextList);
 
         SharedPreferences sharedPreferences = getSharedPreferences("Data", MODE_PRIVATE);
         String jsonString = sharedPreferences.getString("json_data", null);
@@ -88,19 +91,22 @@ public class FirstPage extends AppCompatActivity {
             String[] weatherDetailsToday = tools.getCurrentWeather();
             String[] locationDetailsToday = tools.getLocationDetails();
             String[] minMaxTempsToday = tools.getMinMaxTemp();
-            todayText.setText(locationDetailsToday[0]);
-            todayText.append("\n"+weatherDetailsToday[0] + "°F");
-            todayText.append("\n"+weatherDetailsToday[1]);
-            todayText.append("\nHigh: "+minMaxTempsToday[1]+"°F Low: "+minMaxTempsToday[0]+"°F");
+            locationText.setText(locationDetailsToday[0]);
+            tempText.setText(weatherDetailsToday[0] + "°F");
+            weatherCondText.setText(weatherDetailsToday[1]);
+            int iconId = getResources().getIdentifier(weatherDetailsToday[2].substring(6, 7)+weatherDetailsToday[2].substring(12, 15), "drawable", getPackageName());
+            weatherCondIcon.setImageResource(iconId);
+            highAndLowText.setText("High: "+minMaxTempsToday[1]+"°F Low: "+minMaxTempsToday[0]+"°F");
 
             ArrayList<HourWeather> hourlyForecastDetails = tools.getHourlyForecast();
             SimpleDateFormat sdf = new SimpleDateFormat("h a", Locale.getDefault());
-            for (int i = 0; i < hourlyForecastDetails.size(); i++) {
+            for (int i = 0; i < hourlyForecastDetails.size() - 1; i++) {
+                // .size() - 1 because hourlyForecast gets up to 1 AM
                 HourWeather curr = hourlyForecastDetails.get(i);
                 long epochMs = curr.getHourEpoch() * 1000;
                 hourlyForecastText.append(sdf.format(new Date(epochMs))+": "+curr.getTemp()+"°F");
                 // need to fix text wrapping. the end of one line can get cut off.
-                if (i < hourlyForecastDetails.size() - 1) {
+                if (i < hourlyForecastDetails.size() - 2) {
                     hourlyForecastText.append("\n");
                 }
             }
